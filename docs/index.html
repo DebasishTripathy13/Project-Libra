@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Libra - AI Security Platform</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --primary: #06b6d4;
+            /* Cyan */
+            --secondary: #3b82f6;
+            /* Blue */
+            --accent: #8b5cf6;
+            /* Violet */
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --glow: 0 0 20px rgba(6, 182, 212, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Utility */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Decor Elements */
+        .glow-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
+        }
+
+        /* Hero Section */
+        header {
+            padding: 6rem 0 4rem;
+            text-align: center;
+        }
+
+        .logo-container {
+            margin-bottom: 2rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .logo-icon {
+            font-size: 5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.5));
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 4rem;
+        }
+
+        /* Terminal Section */
+        .terminal-window {
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            max-width: 800px;
+            margin: 0 auto 6rem;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+            text-align: left;
+        }
+
+        .terminal-header {
+            background: #1e293b;
+            padding: 0.8rem 1rem;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .red {
+            background: #ef4444;
+        }
+
+        .yellow {
+            background: #f59e0b;
+        }
+
+        .green {
+            background: #22c55e;
+        }
+
+        .terminal-body {
+            padding: 1.5rem;
+            color: #a5b4fc;
+            font-size: 0.9rem;
+            min-height: 300px;
+        }
+
+        .command-line {
+            margin-bottom: 0.5rem;
+            display: flex;
+        }
+
+        .prompt {
+            color: var(--primary);
+            margin-right: 0.8rem;
+        }
+
+        .input {
+            color: #fff;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background: var(--primary);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        .output {
+            color: var(--text-muted);
+            white-space: pre-wrap;
+            margin-bottom: 1rem;
+        }
+
+        .output-highlight {
+            color: var(--accent);
+        }
+
+        .output-success {
+            color: #34d399;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: inline-block;
+            padding: 10px;
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 12px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: var(--text-muted);
+        }
+
+        /* Architecture */
+        .architecture {
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .arch-diagram {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 16px;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 4rem;
+            color: var(--text-muted);
+        }
+
+        .social-links {
+            margin-top: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .social-links a {
+            margin: 0 10px;
+            color: var(--text-muted);
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Animations */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="glow-bg"></div>
+
+    <div class="container">
+        <!-- Hero -->
+        <header>
+            <div class="logo-container">
+                <!-- Fallback to icon if image missing -->
+                <i class="bi bi-shield-lock-fill logo-icon"></i>
+            </div>
+            <h1>Project <span class="gradient-text">Libra</span></h1>
+            <p class="subtitle">Agentic AI-Powered Security Log Analysis & SOC Platform</p>
+
+            <div class="hero-btns">
+                <a href="https://github.com/DebasishTripathy13/Project-Libra" class="btn btn-primary">
+                    <i class="bi bi-github"></i> View on GitHub
+                </a>
+                <a href="#features" class="btn btn-outline">Explore Features</a>
+            </div>
+        </header>
+
+        <!-- Terminal Demo -->
+        <section class="terminal-window">
+            <div class="terminal-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+            </div>
+            <div class="terminal-body" id="terminal-content">
+                <!-- Javascript will type here -->
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section id="features" class="features">
+            <h2 class="section-title">Why choose <span class="gradient-text">Libra</span>?</h2>
+
+            <div class="grid">
+                <!-- Card 1 -->
+                <div class="card">
+                    <div class="icon"><i class="bi bi-database-lock"></i></div>
+                    <h3>Tamper-Proof Logging</h3>
+                    <p>Dual-database architecture (Primary + Immutable Backup) secured by cryptographic hash chains
+                        ensures your logs are never compromised.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="card">
+                    <div class="icon"><i class="bi bi-robot"></i></div>
+                    <h3>Agentic AI Analysis</h3>
+                    <p>Integrates Gemini, OpenAI, and Ollama to not just read logs, but hunt for threats, explain
+                        anomalies, and suggest remediation.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="card">
+                    <div class="icon"><i class="bi bi-cpu"></i></div>
+                    <h3>ML Anomaly Detection</h3>
+                    <p>Built-in IsolationForest and Baseline Learning models adapt to your system's normal behavior to
+                        spot zero-day anomalies.</p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="card">
+                    <div class="icon"><i class="bi bi-terminal"></i></div>
+                    <h3>Metasploit-Style Console</h3>
+                    <p>Powerful interactive CLI for security professionals. Run modules, manage database, and hunt
+                        threats from the terminal.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Docker Section -->
+        <section class="features" style="text-align: center;">
+            <h2 class="section-title">Deployment Ready</h2>
+            <div class="card" style="max-width: 800px; margin: 0 auto; text-align: left;">
+                <div class="terminal-body" style="min-height: auto; background: transparent; padding: 0;">
+                    <div class="command-line">
+                        <span class="prompt">$</span>
+                        <span class="input">docker pull debasishtripathy1302/project-libra:latest</span>
+                    </div>
+                    <div class="command-line">
+                        <span class="prompt">$</span>
+                        <span class="input">docker run -p 8000:8000 project-libra</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2025 Project Libra. Open Source Security.</p>
+            <div class="social-links">
+                <a href="https://github.com/DebasishTripathy13/Project-Libra"><i class="bi bi-github"></i></a>
+                <a href="#"><i class="bi bi-twitter-x"></i></a>
+                <a href="#"><i class="bi bi-discord"></i></a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Terminal Typing Effect
+        const terminalContent = document.getElementById('terminal-content');
+
+        const commands = [
+            { text: "./libra", type: 'input' },
+            {
+                text: `
+   __    ____  ____  ____   __
+  (  )  (_  _)(  _ \\(  _ \\ / _\\
+  / (_/\\ _)(_  ) _ ( )   //    \\
+  \\____/(____)(____/(__\\_)\\_/\\_/  v2.0
+      SECURITY OPERATIONS CENTER
+
+[+] System Integrity ...... VERIFIED
+[+] AI Engine ............. ONLINE (Gemini-2.0)
+[+] Database Chain ........ VALID (150 blocks)
+`, type: 'output', class: 'output-highlight'
+            },
+            { text: "libra > use ai/hunt", type: 'input', prompt: "libra >" },
+            { text: "[+] Module loaded: AI Threat Hunter", type: 'output', class: 'output-success' },
+            { text: "libra ai/hunt > run", type: 'input', prompt: "libra ai/hunt >" },
+            { text: "[*] Analyzing system logs with Gemini...\n[*] Detecting anomalies in auth.log...\n[!] SUSPICIOUS ACTIVITY DETECTED: SSH Brute Force pattern from 192.168.1.105", type: 'output' },
+            { text: "libra ai/hunt > _", type: 'input', prompt: "", cursor: true }
+        ];
+
+        let cmdIndex = 0;
+        let charIndex = 0;
+        let isTyping = false;
+        let currentElement = null;
+
+        function createLine(promptText = "$") {
+            const div = document.createElement('div');
+            div.className = 'command-line';
+            div.innerHTML = `<span class="prompt">${promptText}</span><span class="input"></span>`;
+            terminalContent.appendChild(div);
+            return div.querySelector('.input');
+        }
+
+        function typeWriter() {
+            if (cmdIndex >= commands.length) return;
+
+            const cmd = commands[cmdIndex];
+
+            if (cmd.type === 'input') {
+                if (!isTyping) {
+                    if (cmd.cursor) {
+                        // Final state
+                        const div = document.createElement('div');
+                        div.className = 'command-line';
+                        div.innerHTML = `<span class="prompt">${cmd.prompt || "$"}</span><span class="input"></span><span class="cursor"></span>`;
+                        terminalContent.appendChild(div);
+                        return;
+                    }
+                    currentElement = createLine(cmd.prompt);
+                    isTyping = true;
+                    charIndex = 0;
+                }
+
+                if (charIndex < cmd.text.length) {
+                    currentElement.textContent += cmd.text.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeWriter, 50 + Math.random() * 50); // Typing speed
+                } else {
+                    isTyping = false;
+                    cmdIndex++;
+                    setTimeout(typeWriter, 500); // Pause after typing
+                }
+            } else {
+                // Output is instant
+                const div = document.createElement('div');
+                div.className = 'output ' + (cmd.class || '');
+                div.textContent = cmd.text;
+                terminalContent.appendChild(div);
+                cmdIndex++;
+                setTimeout(typeWriter, 200);
+            }
+        }
+
+        // Start animation
+        setTimeout(typeWriter, 1000);
+    </script>
+</body>
+
+</html>
