@@ -68,8 +68,8 @@
 ```
 
 ### 🤖 AI/LLM Integration
-- **Gemini 2.0** - Google's latest AI model
-- **OpenAI GPT** - GPT-4/GPT-3.5 support
+- **Gemini 3.0** - Google's latest AI model
+- **OpenAI GPT** - GPT-5/GPT-4 support
 - **Ollama** - Local LLM inference
 - **Groq** - Ultra-fast inference
 
@@ -77,6 +77,26 @@
 - **IsolationForest** - Anomaly detection
 - **BaselineLearner** - Adaptive behavior modeling
 - **PatternDetector** - Security pattern matching
+
+---
+
+## 🐳 Docker Deployment
+
+ProjectLibra supports multi-architecture deployments for **Linux (x86_64)** and **macOS (Apple Silicon/ARM64)**.
+
+### Automated Builds
+Every push to `main` automatically builds and publishes a Docker image to GitHub Container Registry.
+
+```bash
+docker pull ghcr.io/debasishtripathy13/project-libra:latest
+```
+
+### Manual Release
+To build and push multi-arch images locally (requires `docker buildx`):
+
+```bash
+./scripts/docker_release.sh
+```
 
 ---
 
