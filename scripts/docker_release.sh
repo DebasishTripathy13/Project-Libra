@@ -4,7 +4,7 @@
 
 set -e
 
-IMAGE_NAME="ghcr.io/debasishtripathy13/project-libra"
+IMAGE_NAME="debasishtripathy1302/project-libra"
 VERSION=$(date +%Y%m%d)-dev
 
 # Initialize buildx if not already done

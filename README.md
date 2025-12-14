@@ -85,10 +85,10 @@
 ProjectLibra supports multi-architecture deployments for **Linux (x86_64)** and **macOS (Apple Silicon/ARM64)**.
 
 ### Automated Builds
-Every push to `main` automatically builds and publishes a Docker image to GitHub Container Registry.
+Every push to `main` automatically builds and publishes a Docker image to **Docker Hub**.
 
 ```bash
-docker pull ghcr.io/debasishtripathy13/project-libra:latest
+docker pull debasishtripathy1302/project-libra:latest
 ```
 
 ### Manual Release
