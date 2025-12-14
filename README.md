@@ -80,6 +80,18 @@
 
 ---
 
+## 📦 Binary Downloads
+
+Standalone binaries for **Linux** and **macOS** are automatically generated for every release.
+
+1.  Go to the [**Releases Page**](../../releases).
+2.  Download the zip file for your OS (`libra-linux.zip` or `libra-macos.zip`).
+3.  Extract and run:
+    ```bash
+    unzip libra-linux.zip
+    ./libra
+    ```
+
 ## 🐳 Docker Deployment
 
 ProjectLibra supports multi-architecture deployments for **Linux (x86_64)** and **macOS (Apple Silicon/ARM64)**.
