@@ -1,0 +1,45 @@
+# ProjectLibra Dependencies
+
+# Core
+python-dateutil>=2.8.2
+
+# Database
+# SQLite is built into Python
+
+# Machine Learning
+scikit-learn>=1.3.0
+numpy>=1.24.0
+
+# Async support
+asyncio-throttle>=1.0.2
+
+# LLM Clients (optional, based on provider)
+openai>=1.50.0  # 2025 API with responses endpoint
+google-genai>=1.0.0  # New 2025 Gemini SDK (replaces google-generativeai)
+groq>=0.4.0
+httpx>=0.25.0  # For Ollama HTTP API
+
+# Web Framework (for API/Dashboard)
+fastapi>=0.104.0
+uvicorn>=0.24.0
+jinja2>=3.1.0
+
+# CLI
+click>=8.1.0
+rich>=13.0.0
+
+# Utilities
+pydantic>=2.5.0
+pyyaml>=6.0.0
+python-dotenv>=1.0.0
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+
+# Type checking
+mypy>=1.7.0
+
+# Linting
+ruff>=0.1.0

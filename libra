@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+"""
+ProjectLibra - Agentic AI Security Platform
+Usage: 
+  libra              - Start interactive console (Metasploit-style)
+  libra console      - Start interactive console
+  libra <command>    - Run a specific command
+"""
+
+import sys
+import os
+
+# Add project root to path
+project_root = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, project_root)
+
+def main():
+    # If no arguments or 'console' argument, start interactive console
+    if len(sys.argv) == 1 or (len(sys.argv) == 2 and sys.argv[1] == 'console'):
+        from src.cli.console import run_console
+        config_path = None
+        # Check for -c/--config before console
+        for i, arg in enumerate(sys.argv):
+            if arg in ['-c', '--config'] and i + 1 < len(sys.argv):
+                config_path = sys.argv[i + 1]
+        run_console(config_path)
+    else:
+        # Run click CLI for direct commands
+        from src.cli.commands import cli
+        cli(obj={})
+
+if __name__ == '__main__':
+    main()
+

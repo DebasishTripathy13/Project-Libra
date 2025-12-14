@@ -1,0 +1,210 @@
+# ProjectLibra
+
+**Agentic AI-Driven Unified Host Security, Behavior Analysis, and Self-Maintenance Platform**
+
+## Overview
+
+ProjectLibra is a cross-platform security intelligence platform that combines:
+- **LLM-powered log analysis** for semantic understanding
+- **ML behavioral modeling** for per-host anomaly detection
+- **Agentic AI architecture** for multi-step reasoning
+- **Tamper-proof audit logging** for forensic integrity
+
+## Key Features
+
+### 🛡️ Dual Database Security System
+
+The core security innovation is a **tamper-proof dual database architecture**:
+
+```
+┌─────────────────────────┐    ┌─────────────────────────────┐
+│   PRIMARY DATABASE      │    │   IMMUTABLE BACKUP DATABASE │
+│   (Main Operations)     │    │   (Tamper-Proof Audit Log)  │
+│                         │    │                              │
+│  • Read/Write Access    │    │  • Write-Once/Read-Many     │
+│  • Real-time queries    │    │  • Cryptographic hashing    │
+│  • Attacker target      │    │  • Blockchain-style chain   │
+│                         │    │  • Separate credentials     │
+└─────────────────────────┘    └─────────────────────────────┘
+              │                              │
+              └──────────┬───────────────────┘
+                         ▼
+            ┌─────────────────────────┐
+            │  INTEGRITY VALIDATOR    │
+            │  (Continuous Compare)   │
+            │  Detects Manipulation   │
+            └─────────────────────────┘
+```
+
+**Why this matters:**
+- Even if an attacker gains full access to the primary database, they **cannot modify the backup** without breaking the cryptographic hash chain
+- Any tampering (modifications, deletions) is **immediately detectable**
+- The backup serves as **immutable evidence** for forensic analysis
+
+### 🤖 Agentic AI Architecture
+
+Multi-agent system for intelligent security analysis:
+- **Observation Agent** - Monitors incoming signals
+- **Correlation Agent** - Links events across sources
+- **Threat Reasoning Agent** - Evaluates security risk
+- **Maintenance Agent** - Handles updates and patches
+- **Learning Agent** - Adapts models over time
+
+### 📊 ML Behavioral Analysis
+
+Per-host behavioral baseline learning:
+- CPU/RAM/Disk usage patterns
+- Network behavior profiling
+- Process execution flows
+- Anomaly detection via deviation
+
+### 🔌 Pluggable LLM Backends
+
+Support for multiple LLM providers:
+- OpenAI GPT-4
+- Google Gemini
+- Groq
+- Ollama (local, privacy-first)
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-org/projectlibra.git
+cd projectlibra
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# or: venv\Scripts\activate  # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+## Quick Start
+
+### Run the Tamper Detection Demo
+
+```bash
+cd src
+python demo_tamper_detection.py
+```
+
+This demonstrates:
+1. Creating dual database system
+2. Storing events in both databases
+3. Simulating attacker modifications
+4. Detecting tampering via integrity checks
+5. Recovering original data from backup
+
+### Basic Usage
+
+```python
+from database import create_dual_db_system
+from services import IntegrityMonitorService
+import asyncio
+
+# Create the dual database system
+db_manager = create_dual_db_system('/var/lib/projectlibra')
+
+# Store an event (written to BOTH databases)
+db_manager.store_event(
+    event_id='evt-001',
+    timestamp=datetime.now(),
+    source='auth_system',
+    event_type='login_attempt',
+    severity='warning',
+    host_id='server-001',
+    raw_data={'user': 'admin', 'ip': '10.0.0.1', 'success': False},
+    normalized_data={'action': 'failed_login'}
+)
+
+# Check integrity
+report = db_manager.full_integrity_audit()
+print(f"Status: {report.overall_status}")
+print(f"Tampered records: {report.tampered_records}")
+
+# Start continuous monitoring
+async def run_monitor():
+    monitor = IntegrityMonitorService(db_manager, check_interval_seconds=60)
+    await monitor.start()
+
+asyncio.run(run_monitor())
+```
+
+## Architecture
+
+```
+src/
+├── database/           # Dual Database System
+│   ├── dual_db_manager.py
+│   └── __init__.py
+├── services/           # Core Services  
+│   ├── integrity_monitor.py
+│   └── __init__.py
+├── agents/            # AI Agents (coming soon)
+├── collectors/        # Data Collectors (coming soon)
+├── llm/              # LLM Integration (coming soon)
+├── ml/               # ML Engine (coming soon)
+└── demo_tamper_detection.py
+```
+
+## Security Model
+
+### Backup Database Protection
+
+1. **Append-only operations** - No UPDATE or DELETE allowed
+2. **Hash chain integrity** - Each record links to previous (blockchain-style)
+3. **Separate credentials** - Backup DB uses different credentials
+4. **Trigger protection** - Database triggers prevent modifications
+
+### Detection Capabilities
+
+| Attack Type | Detection Method |
+|-------------|------------------|
+| Record modification | Hash mismatch between primary and backup |
+| Record deletion | Record exists in backup but not primary |
+| Timestamp manipulation | Original timestamp preserved in backup |
+| Mass data corruption | Hash chain verification fails |
+
+## Configuration
+
+```yaml
+# config/database.yaml
+primary_database:
+  type: sqlite
+  path: /var/lib/projectlibra/primary.db
+
+backup_database:
+  type: sqlite
+  path: /var/lib/projectlibra/backup/immutable.db
+  security:
+    append_only: true
+    require_hash_chain: true
+
+integrity_monitor:
+  enabled: true
+  check_interval_seconds: 300
+  alert_channels:
+    - log
+    - email
+    - slack
+```
+
+## Documentation
+
+See [SOLUTION_ARCHITECTURE.md](./SOLUTION_ARCHITECTURE.md) for comprehensive documentation including:
+- Detailed architecture diagrams
+- Component specifications
+- Implementation code
+- Deployment options
+- Security considerations
+
+## License
+
+MIT License - See LICENSE file for details.
+
+## Contributing
+
+Contributions welcome! Please read our contributing guidelines before submitting PRs.

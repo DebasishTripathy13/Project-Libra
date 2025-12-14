@@ -1,0 +1,190 @@
+# ProjectLibra - Agentic AI-Driven Security Platform
+# Default Configuration File
+
+# Application settings
+app:
+  name: "ProjectLibra"
+  version: "1.0.0"
+  environment: "development"  # development, staging, production
+  log_level: "INFO"           # DEBUG, INFO, WARNING, ERROR
+
+# Database configuration (dual tamper-proof system)
+database:
+  # Primary operational database
+  primary_path: "data/primary.db"
+  # Immutable backup for tamper detection
+  backup_path: "data/backup.db"
+  # Integrity check interval in seconds
+  integrity_check_interval: 60
+  # Enable real-time tamper detection
+  real_time_detection: true
+
+# LLM Configuration
+llm:
+  # Provider: openai, ollama, groq, gemini
+  provider: "gemini"
+  
+  # OpenAI settings (2025 models)
+  openai:
+    api_key: ""  # Set via OPENAI_API_KEY env var
+    model: "gpt-5.2"  # Best for coding/agentic tasks. Also: gpt-5-mini, gpt-5-nano
+    temperature: 0.7
+    max_tokens: 2048
+  
+  # Ollama settings (local LLM - recommended for air-gapped)
+  ollama:
+    host: "http://localhost:11434"
+    model: "llama3"
+    temperature: 0.7
+  
+  # Groq settings (fast inference)
+  groq:
+    api_key: ""  # Set via GROQ_API_KEY env var
+    model: "llama3-70b-8192"
+    temperature: 0.7
+  
+  # Gemini settings (2025 models)
+  gemini:
+    api_key: "AIzaSyBMQDaZoK2UevqZnxNsdxIbORLbPj90uy0"  # Set via GEMINI_API_KEY env var
+    model: "gemini-flash-latest"  # Fast and efficient. Also: gemini-1.5-pro, gemini-2.0-flash-exp
+    temperature: 0.7
+
+# ML/Behavioral Analysis settings
+ml:
+  # Anomaly detection sensitivity (0.0 - 1.0)
+  sensitivity: 0.7
+  # Baseline learning window (hours)
+  baseline_window_hours: 24
+  # Minimum samples for baseline
+  min_baseline_samples: 100
+  # Model save path
+  model_path: "models/"
+  # Enable continuous learning
+  continuous_learning: true
+
+# Agent configuration
+agents:
+  # Enable specific agents
+  enabled:
+    observation: true
+    correlation: true
+    threat: true
+    maintenance: true
+    learning: true
+  
+  # Agent processing intervals (seconds)
+  intervals:
+    observation: 5
+    correlation: 10
+    threat: 15
+    maintenance: 30
+    learning: 60
+  
+  # Threat severity thresholds
+  thresholds:
+    critical: 0.9
+    high: 0.7
+    medium: 0.5
+    low: 0.3
+
+# Data collectors configuration
+collectors:
+  # Log collector settings
+  logs:
+    enabled: true
+    paths:
+      linux:
+        - "/var/log/syslog"
+        - "/var/log/auth.log"
+        - "/var/log/secure"
+      windows:
+        - "System"
+        - "Security"
+        - "Application"
+      darwin:
+        - "/var/log/system.log"
+        - "/var/log/install.log"
+    max_entries: 1000
+  
+  # Process collector settings
+  processes:
+    enabled: true
+    interval: 10
+    track_children: true
+    suspicious_patterns:
+      - "mimikatz"
+      - "nc\\.exe"
+      - "powershell.*-enc"
+      - "base64.*decode"
+  
+  # Network collector settings
+  network:
+    enabled: true
+    interval: 10
+    monitor_established: true
+    track_dns: true
+    suspicious_ports:
+      - 4444
+      - 5555
+      - 31337
+  
+  # System metrics collector
+  metrics:
+    enabled: true
+    interval: 30
+    collect_cpu: true
+    collect_memory: true
+    collect_disk: true
+
+# API server configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+  cors_origins:
+    - "http://localhost:3000"
+    - "http://localhost:8080"
+  # API authentication (optional)
+  auth:
+    enabled: false
+    api_key: ""  # Set via LIBRA_API_KEY env var
+
+# Alerting configuration
+alerting:
+  enabled: true
+  # Alert channels
+  channels:
+    console: true
+    file: true
+    webhook: false
+  # Webhook URL for external alerting (Slack, Teams, etc.)
+  webhook_url: ""
+  # Minimum severity to alert
+  min_severity: "medium"
+
+# Self-healing/Maintenance settings
+maintenance:
+  # Enable automatic remediation
+  auto_remediate: false
+  # Actions that can be automated
+  allowed_actions:
+    - "quarantine_file"
+    - "block_ip"
+    - "kill_process"
+  # Require confirmation for these actions
+  require_confirmation:
+    - "system_restore"
+    - "service_restart"
+  # Backup important files before remediation
+  backup_before_remediate: true
+
+# Logging configuration
+logging:
+  # Log file path
+  file_path: "logs/libra.log"
+  # Maximum log file size (MB)
+  max_size_mb: 100
+  # Number of backup files to keep
+  backup_count: 5
+  # Log format
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

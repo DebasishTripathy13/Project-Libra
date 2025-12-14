@@ -1,0 +1,315 @@
+# ProjectLibra - Log Sources Configuration
+# ==========================================
+# Configure which logs to monitor for security analysis.
+# Comment out sources you don't want to monitor.
+# Add custom log paths as needed.
+
+# Enable/disable log monitoring globally
+enabled: true
+
+# Maximum entries to read per source per cycle
+max_entries_per_source: 500
+
+# Read interval in seconds
+read_interval: 10
+
+# ==========================================
+# SYSTEM LOGS (Linux)
+# Default system logs - recommended for security monitoring
+# ==========================================
+system_logs:
+  enabled: true
+  sources:
+    # Systemd journal - primary system log on modern Linux
+    - name: "systemd-journal"
+      type: "journalctl"
+      command: "journalctl -n 100 --no-pager -o short-iso"
+      enabled: true
+      priority: "high"
+      description: "Systemd journal logs (kernel, services, boot)"
+    
+    # General system messages
+    - name: "syslog"
+      type: "file"
+      path: "/var/log/syslog"
+      enabled: true
+      priority: "high"
+      description: "General system messages"
+    
+    # Alternative to syslog on RHEL/CentOS
+    - name: "messages"
+      type: "file"
+      path: "/var/log/messages"
+      enabled: true
+      priority: "high"
+      description: "System messages (RHEL/CentOS)"
+
+# ==========================================
+# AUTHENTICATION LOGS
+# Critical for detecting unauthorized access attempts
+# ==========================================
+auth_logs:
+  enabled: true
+  sources:
+    # SSH, sudo, su, login attempts
+    - name: "auth"
+      type: "file"
+      path: "/var/log/auth.log"
+      enabled: true
+      priority: "critical"
+      description: "Authentication logs (SSH, sudo, login)"
+    
+    # Alternative on RHEL/CentOS
+    - name: "secure"
+      type: "file"
+      path: "/var/log/secure"
+      enabled: true
+      priority: "critical"
+      description: "Security logs (RHEL/CentOS)"
+    
+    # Failed login attempts
+    - name: "faillog"
+      type: "command"
+      command: "faillog -a 2>/dev/null || true"
+      enabled: false
+      priority: "high"
+      description: "Failed login records"
+    
+    # Last logins
+    - name: "lastlog"
+      type: "command"
+      command: "last -n 50 2>/dev/null || true"
+      enabled: false
+      priority: "medium"
+      description: "Recent login history"
+
+# ==========================================
+# KERNEL LOGS
+# Hardware, drivers, and kernel-level events
+# ==========================================
+kernel_logs:
+  enabled: true
+  sources:
+    # Kernel ring buffer
+    - name: "dmesg"
+      type: "command"
+      command: "dmesg -T --level=err,warn,notice 2>/dev/null | tail -100 || dmesg | tail -100"
+      enabled: true
+      priority: "high"
+      description: "Kernel ring buffer messages"
+    
+    # Kernel log file
+    - name: "kern"
+      type: "file"
+      path: "/var/log/kern.log"
+      enabled: true
+      priority: "medium"
+      description: "Kernel log file"
+
+# ==========================================
+# WEB SERVER LOGS
+# Apache, Nginx access and error logs
+# ==========================================
+web_logs:
+  enabled: true
+  sources:
+    # Apache access log
+    - name: "apache-access"
+      type: "file"
+      path: "/var/log/apache2/access.log"
+      enabled: true
+      priority: "medium"
+      description: "Apache HTTP access log"
+    
+    # Apache error log
+    - name: "apache-error"
+      type: "file"
+      path: "/var/log/apache2/error.log"
+      enabled: true
+      priority: "high"
+      description: "Apache HTTP error log"
+    
+    # Nginx access log
+    - name: "nginx-access"
+      type: "file"
+      path: "/var/log/nginx/access.log"
+      enabled: true
+      priority: "medium"
+      description: "Nginx access log"
+    
+    # Nginx error log
+    - name: "nginx-error"
+      type: "file"
+      path: "/var/log/nginx/error.log"
+      enabled: true
+      priority: "high"
+      description: "Nginx error log"
+
+# ==========================================
+# APPLICATION LOGS
+# Custom application and service logs
+# ==========================================
+app_logs:
+  enabled: false
+  sources:
+    # Example: Custom application log
+    # - name: "myapp"
+    #   type: "file"
+    #   path: "/var/log/myapp/app.log"
+    #   enabled: true
+    #   priority: "medium"
+    #   description: "My application logs"
+    
+    # Example: Docker container logs
+    # - name: "docker-mycontainer"
+    #   type: "command"
+    #   command: "docker logs --tail 100 mycontainer 2>&1"
+    #   enabled: true
+    #   priority: "medium"
+    #   description: "Docker container logs"
+
+# ==========================================
+# DATABASE LOGS
+# MySQL, PostgreSQL, MongoDB logs
+# ==========================================
+database_logs:
+  enabled: false
+  sources:
+    # MySQL error log
+    - name: "mysql"
+      type: "file"
+      path: "/var/log/mysql/error.log"
+      enabled: false
+      priority: "medium"
+      description: "MySQL error log"
+    
+    # PostgreSQL log
+    - name: "postgresql"
+      type: "file"
+      path: "/var/log/postgresql/postgresql-main.log"
+      enabled: false
+      priority: "medium"
+      description: "PostgreSQL log"
+
+# ==========================================
+# SECURITY TOOLS LOGS
+# Firewall, IDS/IPS, antivirus logs
+# ==========================================
+security_logs:
+  enabled: false
+  sources:
+    # UFW firewall log
+    - name: "ufw"
+      type: "file"
+      path: "/var/log/ufw.log"
+      enabled: false
+      priority: "high"
+      description: "UFW firewall log"
+    
+    # iptables (usually in syslog/messages)
+    - name: "iptables"
+      type: "command"
+      command: "grep -i 'iptables\\|netfilter' /var/log/syslog 2>/dev/null | tail -50 || true"
+      enabled: false
+      priority: "high"
+      description: "iptables firewall events"
+    
+    # fail2ban
+    - name: "fail2ban"
+      type: "file"
+      path: "/var/log/fail2ban.log"
+      enabled: false
+      priority: "high"
+      description: "Fail2ban intrusion prevention"
+
+# ==========================================
+# AUDIT LOGS
+# Linux audit subsystem (auditd)
+# ==========================================
+audit_logs:
+  enabled: false
+  sources:
+    # Linux audit log
+    - name: "audit"
+      type: "file"
+      path: "/var/log/audit/audit.log"
+      enabled: false
+      priority: "critical"
+      description: "Linux audit subsystem log"
+    
+    # Audit summary
+    - name: "aureport"
+      type: "command"
+      command: "aureport --summary 2>/dev/null || true"
+      enabled: false
+      priority: "high"
+      description: "Audit report summary"
+
+# ==========================================
+# CUSTOM LOG SOURCES
+# Add your own log sources here
+# ==========================================
+custom_logs:
+  enabled: false
+  sources: []
+    # Example custom source:
+    # - name: "custom-app"
+    #   type: "file"           # file, command, or journalctl
+    #   path: "/path/to/log"   # for type: file
+    #   command: "command"     # for type: command
+    #   enabled: true
+    #   priority: "medium"     # critical, high, medium, low
+    #   description: "Description of the log source"
+    #   
+    #   # Optional filters
+    #   include_patterns:      # Only include lines matching these
+    #     - "error"
+    #     - "warning"
+    #   exclude_patterns:      # Exclude lines matching these
+    #     - "DEBUG"
+    #     - "TRACE"
+
+# ==========================================
+# GLOBAL FILTERS
+# Applied to all log sources
+# ==========================================
+global_filters:
+  # Exclude these patterns from all logs
+  exclude_patterns:
+    - "^\\s*$"                    # Empty lines
+    - "CRON\\[.*\\]: \\(root\\)"  # Routine cron jobs
+  
+  # Always include these patterns (override exclude)
+  always_include_patterns:
+    - "error"
+    - "fail"
+    - "attack"
+    - "unauthorized"
+    - "denied"
+    - "critical"
+
+# ==========================================
+# SEVERITY MAPPING
+# Map log content to severity levels
+# ==========================================
+severity_rules:
+  critical:
+    - "kernel panic"
+    - "segfault"
+    - "out of memory"
+    - "authentication failure.*root"
+    - "POSSIBLE BREAK-IN"
+  high:
+    - "error"
+    - "failed"
+    - "denied"
+    - "unauthorized"
+    - "attack"
+  medium:
+    - "warning"
+    - "timeout"
+    - "retry"
+  low:
+    - "info"
+    - "notice"
+    - "debug"

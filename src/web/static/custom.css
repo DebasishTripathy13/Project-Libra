@@ -1,0 +1,401 @@
+/* --- ProjectLibra Premium Design System --- */
+
+:root {
+    /* Core Palette - Midnight Cyberpunk */
+    --bg-dark: #0f172a;
+    --bg-card: rgba(15, 23, 42, 0.85);
+    /* Darker for better contrast */
+    --bg-card-hover: rgba(30, 41, 59, 0.9);
+    --bg-sidebar: rgba(15, 23, 42, 0.98);
+
+    /* Accents */
+    --primary: #3b82f6;
+    /* Blue 500 */
+    --primary-glow: rgba(59, 130, 246, 0.5);
+    --accent: #06b6d4;
+    /* Cyan 500 */
+    --accent-glow: rgba(6, 182, 212, 0.5);
+
+    /* Status Colors */
+    --success: #10b981;
+    /* Emerald 500 */
+    --warning: #f59e0b;
+    /* Amber 500 */
+    --danger: #ef4444;
+    /* Red 500 */
+
+    /* Text */
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    /* Glassmorphism */
+    --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.15);
+    --neon-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+}
+
+body {
+    background-color: var(--bg-dark);
+    background-image:
+        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.1) 0px, transparent 50%);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Components: Glass Cards */
+.glass-card,
+.stat-card,
+.card {
+    background: var(--bg-card) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: var(--glass-border) !important;
+    border-radius: 16px !important;
+    box-shadow: var(--glass-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s;
+}
+
+.glass-card:hover,
+.stat-card:hover,
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    background: var(--bg-card-hover) !important;
+}
+
+/* Navbar */
+.navbar-custom {
+    background: rgba(15, 23, 42, 0.8) !important;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.03em;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Sidebar */
+.sidebar {
+    height: calc(100vh - 72px);
+    /* Adjust based on navbar height */
+    position: sticky;
+    top: 72px;
+    padding-right: 1rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-link {
+    color: var(--text-secondary) !important;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.nav-link i {
+    font-size: 1.1rem;
+    margin-right: 0.75rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary) !important;
+}
+
+.nav-link:hover i {
+    opacity: 1;
+}
+
+.nav-link.active {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(6, 182, 212, 0.05));
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    color: #60a5fa !important;
+    /* Blue 400 */
+}
+
+.nav-link.active i {
+    color: #60a5fa;
+    opacity: 1;
+}
+
+/* Modern Buttons */
+.modern-btn,
+.btn,
+.btn-primary,
+.btn-custom {
+    background: linear-gradient(135deg, var(--primary), #2563eb);
+    /* Blue 500 to Blue 600 */
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 0.6rem 1.25rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+    transition: all 0.2s;
+    color: white !important;
+}
+
+.modern-btn:hover,
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 8px -1px rgba(37, 99, 235, 0.4);
+    filter: brightness(110%);
+}
+
+.btn-secondary {
+    background: rgba(51, 65, 85, 0.5) !important;
+    /* Slate 700 with opacity */
+    box-shadow: none;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.btn-outline-light {
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: none;
+}
+
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Inputs & Forms */
+.form-control,
+.form-select {
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-primary) !important;
+    border-radius: 10px !important;
+    padding: 0.75rem 1rem !important;
+    backdrop-filter: blur(10px);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important;
+    background: rgba(15, 23, 42, 0.8) !important;
+}
+
+/* Stats */
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+/* Charts */
+.chart-container {
+    position: relative;
+    width: 100%;
+}
+
+/* Utilities */
+.text-xs {
+    font-size: 0.75rem;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
+
+.tracking-tight {
+    letter-spacing: -0.025em;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+/* Badges */
+.badge {
+    padding: 0.35em 0.8em;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border-radius: 6px;
+}
+
+.badge-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Animations & Micro-interactions */
+.transition-all {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-scale:hover {
+    transform: scale(1.02);
+}
+
+.glass-card-hover:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Modals - Glass Theme */
+.modal-content {
+    background: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border-radius: 24px !important;
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 1.5rem 2rem;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 1.5rem 2rem;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(200%);
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.btn-close-white:hover {
+    opacity: 1;
+}
+
+/* Form Elements inside Modal */
+.modal .form-control,
+.modal .form-select {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.modal .form-control:focus,
+.modal .form-select:focus {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border-color: var(--primary) !important;
+}
+
+/* Custom Checkbox */
+.form-check-input {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* High Visibility Stats */
+.stat-value {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: -0.02em;
+}
+
+.stat-label {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+/* Radio Button Active State in Modal */
+.btn-check:checked+.btn-outline-light {
+    background-color: rgba(59, 130, 246, 0.2) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 1px var(--primary);
+}

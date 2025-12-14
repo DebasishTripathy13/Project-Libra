@@ -1,0 +1,108 @@
+# ProjectLibra Docker Compose Configuration
+# Complete deployment stack with monitoring and persistence
+
+version: '3.8'
+
+services:
+  # Main ProjectLibra Security Platform
+  libra:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: projectlibra
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persist databases and logs
+      - libra_data:/app/data
+      - libra_logs:/app/logs
+      - libra_models:/app/models
+      # Mount config file (create from config.yaml.example)
+      - ./config.yaml:/app/config.yaml:ro
+      # For host monitoring (optional - requires privileged)
+      # - /var/log:/host/var/log:ro
+      # - /proc:/host/proc:ro
+    environment:
+      - LIBRA_ENV=production
+      - LIBRA_LOG_LEVEL=INFO
+      - LIBRA_API_HOST=0.0.0.0
+      - LIBRA_API_PORT=8000
+      # LLM Configuration (override in .env file)
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      # For local Ollama (see ollama service below)
+      - LIBRA_LLM_PROVIDER=${LIBRA_LLM_PROVIDER:-ollama}
+      - OLLAMA_HOST=http://ollama:11434
+    networks:
+      - libra_network
+    depends_on:
+      - ollama
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Local LLM via Ollama (optional - for air-gapped/private deployments)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: libra_ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - libra_network
+    # GPU support (uncomment if available)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # CLI Runner (for one-off commands)
+  libra-cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: projectlibra_cli
+    profiles:
+      - cli
+    volumes:
+      - libra_data:/app/data
+      - libra_logs:/app/logs
+      - libra_models:/app/models
+      - ./config.yaml:/app/config.yaml:ro
+    environment:
+      - LIBRA_ENV=production
+      - OLLAMA_HOST=http://ollama:11434
+    networks:
+      - libra_network
+    entrypoint: ["python", "-m", "src.cli"]
+
+# Persistent volumes
+volumes:
+  libra_data:
+    driver: local
+  libra_logs:
+    driver: local
+  libra_models:
+    driver: local
+  ollama_data:
+    driver: local
+
+# Network configuration
+networks:
+  libra_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
