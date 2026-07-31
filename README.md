@@ -2,6 +2,8 @@
 
 <div align="center">
 
+![Project Libra Banner](assets/banner-project-libra.png)
+
 ![Project Libra Logo](assets/logo/image.png)
 
 ```
